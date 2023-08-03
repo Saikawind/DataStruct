@@ -24,7 +24,35 @@ bool InitList(LinkList &L) {
     return true;
 }
 
+// 按位序插入（带头结点）
+bool ListInsert(LinkList &L, int i, ElemType e) {
+    if (i < 1)
+        return false;
+    // 指针 p 指向当前扫描到的结点
+    LNode *p;
+    // 当前 p 指向的是第几个结点
+    int j = 0;
+    // L 指向头结点，头结点是第 0 个结点（不存数据）
+    p = L;
+    // 循环找到第 i-1 个结点
+    while (p != NULL && j < i - 1) {
+        p = p->next;
+        j++;
+    }
+    // i 值不合法
+    if (p == NULL)
+        return false;
+    LNode *s = (LNode *) malloc(sizeof(LNode));
+    s->data = e;
+    s->next = p->next;
+    // 将结点 s 连到 p 之后
+    p->next = s;
+    // 插入成功
+    return true;
+}
 
+
+// 按序查找
 LNode *GetElem(LinkList L, int i) {
     int j = 1;
     LNode *p = L->next;
@@ -52,6 +80,8 @@ int main() {
     LinkList L;
     // 初始化一个空表
     InitList(L);
+    //
+    ListInsert(L, 2, 1);
 
 
     return 0;
