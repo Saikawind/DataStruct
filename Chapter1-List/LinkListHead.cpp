@@ -16,11 +16,25 @@ typedef struct LNode {
 // LinkList 强调这是一个单链表
 // LNode *  强调这是一个结点
 
-// 不带头结点的单链表
-// 初始化一个空的单链表
+// 初始化一个带头结点的空的单链表
 bool InitList(LinkList &L) {
     // 空表，暂时没有任何结点（防止脏数据）
     L = NULL;
+    return true;
+}
+
+// 后插操作：在 p 结点之后插入元素 e
+bool InsertNextNode(LNode *p, ElemType e) {
+    if (p == NULL)
+        return false;
+    LNode *s = (LNode *) malloc(sizeof(LNode));
+    // 内存分配失败
+    if (s == NULL)
+        return false;
+    s->data = e;
+    // 将结点 s 连到 p 之后
+    s->next = p->next;
+    p->next = s;
     return true;
 }
 
@@ -39,15 +53,46 @@ bool ListInsert(LinkList &L, int i, ElemType e) {
         p = p->next;
         j++;
     }
+
+    return InsertNextNode(p, e);
     // i 值不合法
+    // if (p == NULL)
+    //     return false;
+    // LNode *s = (LNode *) malloc(sizeof(LNode));
+    // s->data = e;
+    // s->next = p->next;
+    // // 将结点 s 连到 p 之后
+    // p->next = s;
+    // // 插入成功
+    // return true;
+}
+
+// 前插操作：在 p 结点之前插入元素 e，时间复杂度 O(1)
+bool InsertPriorNode(LNode *p, ElemType e) {
     if (p == NULL)
         return false;
     LNode *s = (LNode *) malloc(sizeof(LNode));
-    s->data = e;
+    // 内存分配失败
+    if (s == NULL)
+        return false;
     s->next = p->next;
-    // 将结点 s 连到 p 之后
+    // 新结点 s 连到 p 之后
     p->next = s;
-    // 插入成功
+    // 将 p 中元素复制到 s 中
+    s->data = p->data;
+    // p 中元素覆盖为 e
+    p->data = e;
+    return true;
+}
+
+// 删除指定结点 p
+bool DeleteNode(LNode *p) {
+    if (p == NULL)
+        return false;
+    LNode *q = p->next;
+    p->data = p->next->data;
+    p->next = q->next;
+    free(q);
     return true;
 }
 

@@ -24,14 +24,23 @@ bool InitList(LinkList &L) {
     return true;
 }
 
-// 按位序插入（带头结点）
+// 按位序插入（不带带头结点）
 bool ListInsert(LinkList &L, int i, ElemType e) {
     if (i < 1)
         return false;
+    // 插入第 1 个结点的操作与其他结点操作不同
+    if (i == 1) {
+        LNode *s = (LNode *) malloc(sizeof(LNode));
+        s->data = e;
+        s->next = L;
+        // 头指针指向新结点
+        L = s;
+        return true;
+    }
     // 指针 p 指向当前扫描到的结点
     LNode *p;
     // 当前 p 指向的是第几个结点
-    int j = 0;
+    int j = 1;
     // L 指向头结点，头结点是第 0 个结点（不存数据）
     p = L;
     // 循环找到第 i-1 个结点
